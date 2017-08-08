@@ -26,7 +26,7 @@ class PayNotifyCallBack extends WxPayNotify
 		{
             if ($result["trade_state"] == "SUCCESS")
             {
-                $this->setPayIsTrue(); 
+                $this->setPayIsTrue($result["attach"]); 
             }
 			return true;
 		}
@@ -52,15 +52,15 @@ class PayNotifyCallBack extends WxPayNotify
 	}
 
     //设置支付成功
-	public function setPayIsTrue()
+	public function setPayIsTrue($attach)
     {
-        Log::DEBUG("================= set Pay is true");
+        Log::DEBUG("================= set Pay is true and attach is" . $attach);
         $post_data = array(
            'setPay' => 'true',
-           'setPay2' => 'true',
+           'product_id' => $attach,
         );
         try{
-                $this->send_post();
+                $this->send_post($post_data);
         }
         catch(Exception $e)
         {
@@ -68,7 +68,7 @@ class PayNotifyCallBack extends WxPayNotify
         }
     }
 
-    public function send_post() {
+    public function send_post($post_data) {
         Log::DEBUG("================= begin send_post");
         $curl = curl_init();
 
@@ -77,7 +77,12 @@ class PayNotifyCallBack extends WxPayNotify
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_POST, 1);
 
-        curl_setopt($curl, CURLOPT_POSTFIELDS, "setPay=true");
+        if (is_array($post_data))
+        {
+            $post_data = http_build_query($post_data, null, '&');
+        }
+        //curl_setopt($curl, CURLOPT_POSTFIELDS, "setPay=true");
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
 
         //执行命令
         $data = curl_exec($curl);

@@ -19,11 +19,13 @@ class NativeNotifyCallBack extends WxPayNotify
 		//统一下单
 		$input = new WxPayUnifiedOrder();
 		$input->SetBody("美式咖啡");
-		$input->SetAttach("test2");
+		$input->SetAttach($product_id);
+		//$input->SetAttach("test2");
 		//$input->SetOut_trade_no(WxPayConfig::MCHID.date("YmdHis"));
         $orderno = WxPayConfig::MCHID.date("YmdHis");
 		$input->SetOut_trade_no($orderno);
-		Log::DEBUG("========order no is :" . $orderno);
+		Log::DEBUG("_____========product_id is :" . $product_id);
+		Log::DEBUG("......========order no is :" . $orderno);
 		$input->SetTotal_fee("1");
 		$input->SetTime_start(date("YmdHis"));
 		$input->SetTime_expire(date("YmdHis", time() + 600));
@@ -53,6 +55,7 @@ class NativeNotifyCallBack extends WxPayNotify
 		$openid = $data["openid"];
 		$product_id = $data["product_id"];
 		
+		Log::DEBUG("===========_____________product id is :" . $product_id);
 		//统一下单
 		$result = $this->unifiedorder($openid, $product_id);
 		if(!array_key_exists("appid", $result) ||
@@ -63,6 +66,7 @@ class NativeNotifyCallBack extends WxPayNotify
 		 	return false;
 		 }
 		
+		$this->SetData("product_id", $result["product_id"]);
 		$this->SetData("appid", $result["appid"]);
 		$this->SetData("mch_id", $result["mch_id"]);
 		$this->SetData("nonce_str", WxPayApi::getNonceStr());

@@ -18,6 +18,8 @@ require_once 'log.php';
  */
 $notify = new NativePay();
 $url1 = $notify->GetPrePayUrl("123456789");
+$machineid = "0000000031f46074";
+$url3 = $notify->GetPrePayUrl("0000000031f46074");
 
 //模式二
 /**
@@ -30,7 +32,7 @@ $url1 = $notify->GetPrePayUrl("123456789");
 $input = new WxPayUnifiedOrder();
 $input->SetBody("Any where coffee");	//商品描述，必填
 $input->SetAttach("test");	//附加数据
-$out_trade_no = WxPayConfig::MCHID.date("YmdHis");
+$out_trade_no = WxPayConfig::MCHID.date("YmdHis").$machineid;
 echo $out_trade_no;
 $input->SetOut_trade_no($out_trade_no);	//商户订单号，必填
 
@@ -56,6 +58,11 @@ $url2 = $result["code_url"];
 	<div style="margin-left: 10px;color:#556B2F;font-size:30px;font-weight: bolder;">扫描支付模式一</div><br/>
 	<img alt="模式一扫码支付" src="http://paysdk.weixin.qq.com/example/qrcode.php?data=<?php echo urlencode($url1);?>" style="width:150px;height:150px;"/>
 	<br/><br/><br/>
+<?php echo urlencode($url1);?>
+	<div style="margin-left: 10px;color:#556B2F;font-size:30px;font-weight: bolder;">0000000031f46074</div><br/>
+	<img alt="coffee machine" src="http://paysdk.weixin.qq.com/example/qrcode.php?data=<?php echo urlencode($url3);?>" style="width:150px;height:150px;"/>
+	<br/><br/><br/>
+
 	<div style="margin-left: 10px;color:#556B2F;font-size:30px;font-weight: bolder;">扫描支付模式二</div><br/>
 	<img alt="模式二扫码支付" src="http://paysdk.weixin.qq.com/example/qrcode.php?data=<?php echo urlencode($url2);?>" style="width:150px;height:150px;"/>
     <input type="hidden" name="out_trade_no" id="out_trade_no" value="<?php echo $out_trade_no;?>" />
