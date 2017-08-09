@@ -24,8 +24,6 @@ class NativeNotifyCallBack extends WxPayNotify
 		//$input->SetOut_trade_no(WxPayConfig::MCHID.date("YmdHis"));
         $orderno = WxPayConfig::MCHID.date("YmdHis");
 		$input->SetOut_trade_no($orderno);
-		Log::DEBUG("_____========product_id is :" . $product_id);
-		Log::DEBUG("......========order no is :" . $orderno);
 		$input->SetTotal_fee("1");
 		$input->SetTime_start(date("YmdHis"));
 		$input->SetTime_expire(date("YmdHis", time() + 600));
@@ -71,10 +69,33 @@ class NativeNotifyCallBack extends WxPayNotify
 		$this->SetData("mch_id", $result["mch_id"]);
 		$this->SetData("nonce_str", WxPayApi::getNonceStr());
 		$this->SetData("prepay_id", $result["prepay_id"]);
-		$this->SetData("result_code", "SUCCESS");
-		$this->SetData("err_code_des", "OK");
+        if($this->getRestData($product_id)){
+                $this->SetData("result_code", "SUCCESS");
+                $this->SetData("err_code_des", "OK");
+        }else{
+                $this->SetData("result_code", "SYSTEMERROR");
+                $this->SetData("err_code_des", "系统繁忙,请稍后再试！");
+        }
 		return true;
 	}
+
+    public function getRestData($product_id){
+        $url = "http://101.200.80.132:3000/api/machines/" . $product_id;
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $data = curl_exec($curl);
+        curl_close($curl);
+        $findme   = "status\":\"0\"";
+        $pos = strpos($data, $findme);
+        if ($pos === false) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
 }
 
 Log::DEBUG("begin native_notify!");

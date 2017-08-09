@@ -20,6 +20,7 @@ $notify = new NativePay();
 $url1 = $notify->GetPrePayUrl("123456789");
 $machineid = "0000000031f46074";
 $url3 = $notify->GetPrePayUrl("0000000031f46074");
+$url4 = $notify->GetPrePayUrl("0000000038c59c04");
 
 //模式二
 /**
@@ -62,6 +63,11 @@ $url2 = $result["code_url"];
 	<div style="margin-left: 10px;color:#556B2F;font-size:30px;font-weight: bolder;">0000000031f46074</div><br/>
 	<img alt="coffee machine" src="http://paysdk.weixin.qq.com/example/qrcode.php?data=<?php echo urlencode($url3);?>" style="width:150px;height:150px;"/>
 	<br/><br/><br/>
+
+	<div style="margin-left: 10px;color:#556B2F;font-size:30px;font-weight: bolder;">0000000038c59c04</div><br/>
+	<img alt="coffee machine" src="http://paysdk.weixin.qq.com/example/qrcode.php?data=<?php echo urlencode($url4);?>" style="width:150px;height:150px;"/>
+	<br/><br/><br/>
+
 
 	<div style="margin-left: 10px;color:#556B2F;font-size:30px;font-weight: bolder;">扫描支付模式二</div><br/>
 	<img alt="模式二扫码支付" src="http://paysdk.weixin.qq.com/example/qrcode.php?data=<?php echo urlencode($url2);?>" style="width:150px;height:150px;"/>
