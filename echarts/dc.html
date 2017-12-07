@@ -3,17 +3,116 @@
 <head>
 <meta charset="utf-8">
 <!-- 引入 ECharts 文件 -->
+<script src="./js/jquery-3.2.1.js"></script>
 <script src="./js/echarts.min.js"></script>
-<script src="./dc.js"></script>
 
 <body>
 <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
 <div id="main" style="width: 600px;height:400px;"></div>
 
 <script type="text/javascript">
-        // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main'));
-        myChart.setOption(option);
+var data = [];
+option = {
+    title: {
+        text: '实验室一 + 电压实时曲线'
+    },
+    tooltip: {
+        trigger: 'axis',
+        formatter: function (params) {
+            params = params[0];
+            var date = new Date(params.name);
+            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+        },
+        axisPointer: {
+            animation: false
+        }
+    },
+    xAxis: {
+        type: 'time',
+        splitLine: {
+            show: false
+        }
+    },
+    yAxis: {
+        type: 'value',
+        boundaryGap: [0, '100%'],
+        splitLine: {
+            show: false
+        }
+    },
+    series: [{
+        name: '模拟数据',
+        type: 'line',
+        showSymbol: false,
+        hoverAnimation: false,
+        data: data
+    }]
+};
+
+// 基于准备好的dom，初始化echarts实例
+var myChart = echarts.init(document.getElementById('main'));
+myChart.setOption(option);
+var isRequst = true;
+var intervalTime = 3000;
+
+function getData(){
+	$.ajax({
+		type: "GET",
+		dataType: "JSONP",
+		url: "http://101.200.80.132:3000/api/elecitems/0000000035998155",
+		headers:{  
+			"Content-Type":"application/json"  
+		}, 
+
+		success: function(data){       
+			debugger;
+			var num = data.length;
+			var temData = [];
+
+			console.log('get data ok');
+			for(i=0;i<num;i++)
+			{
+				recordTime = data[i].recordTime;
+				dcData = data[i].dcData;
+				data1 = {
+					name: recordTime.toString(),
+					value: [
+					    recordTime.toString(),
+					    dcData
+					]
+				};
+				temData.push(data1);
+
+			}
+
+			myChart.setOption({
+				series: [{
+				    data: temData
+				}]
+			});
+
+			if (isRequst) {
+				isRequst = false;
+				window.setInterval('getData()', intervalTime); 
+			}
+		},
+	       
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			debugger;
+			alert('in error');
+			alert(XMLHttpRequest.status);
+			alert(XMLHttpRequest.readyState);
+			alert(textStatus);
+		}
+
+
+	});
+}
+
+
+//setInterval(function(){console.log('interval')} , 2000);
+//setInterval(getData() , 2000);
+getData();
 
 </script>
 

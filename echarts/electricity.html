@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <!-- 引入 ECharts 文件 -->
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.2.1.js"></script>
 <script src="./js/echarts.min.js"></script>
 <script src="./list.js"></script>
 
@@ -18,6 +19,16 @@
                var index = param.dataIndex;
                window.location.href="./dc.html";  
         }); 
+        $.ajax({ 
+                type: "GET",
+                dataType: "jsonp",
+                url: "http://101.200.80.132:3000/api/elecitems/0000000035998155",
+                success: function(data){        
+                        alert(data);
+                }
+        });
+
+
 </script>
 
 </body>

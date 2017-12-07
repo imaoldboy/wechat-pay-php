@@ -10,14 +10,35 @@ function randomData() {
     }
 }
 
+
+
 var data = [];
-var now = +new Date(1997, 9, 3);
+var now = +new Date();
 var oneDay = 24 * 3600 * 1000;
 var value = Math.random() * 1000;
-for (var i = 0; i < 1000; i++) {
-    data.push(randomData());
-}
+//for (var i = 0; i < 1000; i++) {
+ //   data.push(randomData());
+//}
 
+debugger;
+$.ajax({
+        type: "GET",
+        dataType: "jsonp",
+        url: "http://www.usertech.cn:3000/api/elecitems/0000000035998155",
+        success: function(data){       
+                alert(data);
+                debugger;
+                myChart.setOption({
+                        xAxis: { 
+                                data: data.dcData
+                        },
+                        series: [{ // 根据名字对应到相应的系列 
+                                name: '销量', 
+                                data: data.dcData }] 
+                        }); 
+
+                }
+});
 option = {
     title: {
         text: '实验室一 + 电压实时曲线'
