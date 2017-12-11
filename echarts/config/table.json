@@ -1,0 +1,50 @@
+{
+        "coffeemachines": {
+            "description": "String",
+            "location": "String",
+            "customerID": "String",
+            "ipAddress": "String",
+            "maintainerID": "String",
+            "updateUrl": "String",
+            "qrCode": "String",
+            "remarks": "String",
+            "cups": "String",
+            "status": "String",
+            "serialNo": "String"
+        },
+
+        "payments": {
+            "payType": "String",
+            "payTime": "Date",
+            "billID": "String",
+            "machineID": "String",
+            "userID": "String",
+            "billAmount": "String",
+            "isRedraw": "String",
+            "remarks": "String"
+        },
+
+        "users": {
+            "userType": "String",
+            "username": "String",
+            "password": "String",
+            "wechat": "String",
+            "qq": "String",
+            "mobile": "String",
+            "email": "String",
+            "status": "String",
+            "remarks": "String"
+        },
+
+        "maintainers": {
+            "username": "String",
+            "password": "String",
+            "wechat": "String",
+            "qq": "String",
+            "mobile": "String",
+            "email": "String",
+            "status": "String",
+            "remarks": "String"
+        }
+
+}
